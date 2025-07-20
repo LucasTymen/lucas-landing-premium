@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lucas Tymen - Growth Hacker & Full Stack Developer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #0a0a0a;
+      --secondary: #ffffff;
+      --accent: #00ff88;
+      --accent-yellow: #ffff00;
+      --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-hero: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 50%, #16213e 100%);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--primary);
+      color: var(--secondary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Animated Background */
+    .bg-animated {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: var(--gradient-hero);
+    }
+
+    .bg-animated::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 50%, rgba(0, 255, 136, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+      animation: float 20s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      padding: 2rem;
+    }
+
+    .hero-content h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #ffffff 0%, #00ff88 50%, #ffff00 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: glow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { filter: brightness(1); }
+      to { filter: brightness(1.2); }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      font-weight: 300;
+    }
+
+    .hero-description {
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      font-size: 1.1rem;
+      opacity: 0.8;
+      line-height: 1.8;
+    }
+
+    .cta-container {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .cta-primary, .cta-secondary {
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-primary {
+      background: var(--accent);
+      color: var(--primary);
+      border: 2px solid var(--accent);
+    }
+
+    .cta-secondary {
+      background: transparent;
+      color: var(--secondary);
+      border: 2px solid var(--secondary);
+    }
+
+    .cta-primary:hover, .cta-secondary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+    }
+
+    /* Scroll Indicator */
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    /* Sections */
+    .section {
+      padding: 5rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .section h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 3rem;
+      text-align: center;
+      background: linear-gradient(135deg, #ffffff 0%, #00ff88 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* About Timeline */
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      width: 2px;
+      background: var(--accent);
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -1px;
+    }
+
+    .timeline-item {
+      padding: 1rem 2rem;
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .timeline-item:hover {
+      transform: translateY(-5px);
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: var(--accent);
+      border-radius: 50%;
+      left: 50%;
+      transform: translateX(-50%);
+      top: -10px;
+    }
+
+    /* Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-yellow));
+    }
+
+    .project-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 255, 136, 0.2);
+    }
+
+    .project-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .project-badge {
+      display: inline-block;
+      background: var(--accent-yellow);
+      color: var(--primary);
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    /* Skills Section */
+    .skills-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .skill-category {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      padding: 2rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .skill-category:hover {
+      transform: translateY(-5px);
+      background: rgba(0, 255, 136, 0.1);
+    }
+
+    .skill-icon {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+
+    .skill-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+
+    .skill-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .skill-list li {
+      padding: 0.5rem 0;
+      opacity: 0.8;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .skill-list li:last-child {
+      border-bottom: none;
+    }
+
+    /* Contact Section */
+    .contact-section {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      margin-top: 5rem;
+      border-radius: 30px;
+      padding: 4rem 2rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      font-size: 1.1rem;
+    }
+
+    .contact-item i {
+      color: var(--accent);
+      font-size: 1.5rem;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: var(--secondary);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .social-link:hover {
+      background: var(--accent);
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .timeline::before {
+        left: 20px;
+      }
+      
+      .timeline-item::before {
+        left: 10px;
+        transform: translateX(-50%);
+      }
+      
+      .contact-info {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+    }
+
+    /* Smooth Scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Loading Animation */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeInUp 1s ease forwards;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .delay-1 { animation-delay: 0.2s; }
+    .delay-2 { animation-delay: 0.4s; }
+    .delay-3 { animation-delay: 0.6s; }
+  </style>
+</head>
+<body>
+  <div class="bg-animated"></div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content fade-in">
+      <h1>Lucas Tymen</h1>
+      <p class="hero-subtitle fade-in delay-1">Growth Hacker & Développeur Full Stack</p>
+      <p class="hero-description fade-in delay-2">
+        Data, design & automation au service de la croissance. Je conçois des stratégies mêlant scraping avancé, automatisation multicanal et expérimentation A/B pour générer de la performance sans sacrifier l'intention ni le sens.
+      </p>
+      <div class="cta-container fade-in delay-3">
+        <a href="#contact" class="cta-primary">
+          <i class="fas fa-calendar-alt"></i> Prendre RDV
+        </a>
+        <a href="#projets" class="cta-secondary">
+          <i class="fas fa-rocket"></i> Voir mes projets
+        </a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <i class="fas fa-chevron-down" style="color: var(--accent); font-size: 1.5rem;"></i>
+    </div>
+  </section>
+
+  <!-- About Timeline -->
+  <section class="section">
+    <h2>Mon Parcours</h2>
+    <div class="timeline">
+      <div class="timeline-item fade-in">
+        <h3 style="color: var(--accent); font-family: 'Space Grotesk', sans-serif;">2025 - Rocket School</h3>
+        <p>Formation Growth Hacker & Automatisation. Spécialisation en scraping, n8n, expérimentation A/B.</p>
+      </div>
+      <div class="timeline-item fade-in delay-1">
+        <h3 style="color: var(--accent); font-family: 'Space Grotesk', sans-serif;">2023 - ASTON</h3>
+        <p>POEC Développement Java/Angular/Spring Boot. Transition vers le développement backend.</p>
+      </div>
+      <div class="timeline-item fade-in delay-2">
+        <h3 style="color: var(--accent); font-family: 'Space Grotesk', sans-serif;">2022 - Le Wagon</h3>
+        <p>Bootcamp Full Stack Ruby on Rails/JavaScript. Premiers pas dans le code.</p>
+      </div>
+      <div class="timeline-item fade-in delay-3">
+        <h3 style="color: var(--accent); font-family: 'Space Grotesk', sans-serif;">2017 - M2i</h3>
+        <p>Formation Infographiste Multimédia. Webdesign et culture visuelle.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Section -->
+  <section class="section" id="projets">
+    <h2>Projets Phares</h2>
+    <div class="projects-grid">
+      <div class="project-card fade-in">
+        <div class="project-badge">🏆 1er Place - 20/20</div>
+        <h3 class="project-title">Parazar</h3>
+        <p>Algorithme de matching sur critères sociaux développé en Python. Scraping enrichi avec PhantomBuster, automatisation n8n intégrant Claude IA et récupération des statistiques Google. Amélioration SEO avec +48% de vitesse.</p>
+        <a href="https://www.canva.com/design/DAGtnFBdwRQ/n6oS_XnZHOMVLGvxp2ZK2Q/view" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 600;">
+          <i class="fas fa-external-link-alt"></i> Voir la présentation
+        </a>
+      </div>
+
+      <div class="project-card fade-in delay-1">
+        <div class="project-badge">🥈 2e Place UX/SEO</div>
+        <h3 class="project-title">Engage Paris</h3>
+        <p>Landing page développée en Next.js avec tracking GA4/GTM optimisé. Formulaire Tally connecté via Make pour l'automatisation des leads. Focus sur l'expérience utilisateur et le SEO.</p>
+        <a href="https://engage-paris-landing.vercel.app/" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 600;">
+          <i class="fas fa-external-link-alt"></i> Voir la landing
+        </a>
+      </div>
+
+      <div class="project-card fade-in delay-2">
+        <div class="project-badge">🏅 1er Équipe</div>
+        <h3 class="project-title">Avtis</h3>
+        <p>Solution complète de prospection automatisée : scraping et enrichissement de leads, campagnes A/B testées sur Waalaxy & Lemlist, reporting avancé avec Looker Studio.</p>
+        <a href="https://www.canva.com/design/DAGtnOqLZx4/Jr4yMf37ec6QGxHYGfvxmg/view" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 600;">
+          <i class="fas fa-external-link-alt"></i> Voir la présentation
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section -->
+  <section class="section">
+    <h2>Compétences Techniques</h2>
+    <div class="skills-container">
+      <div class="skill-category fade-in">
+        <div class="skill-icon"><i class="fas fa-chart-line"></i></div>
+        <h3 class="skill-title">Scraping & Data</h3>
+        <ul class="skill-list">
+          <li>PhantomBuster</li>
+          <li>Python (requests, bs4, pandas)</li>
+          <li>Octoparse</li>
+          <li>API REST</li>
+        </ul>
+      </div>
+
+      <div class="skill-category fade-in delay-1">
+        <div class="skill-icon"><i class="fas fa-search"></i></div>
+        <h3 class="skill-title">Tracking & SEO</h3>
+        <ul class="skill-list">
+          <li>Google Analytics 4</li>
+          <li>Google Tag Manager</li>
+          <li>Screaming Frog</li>
+          <li>Semrush</li>
+        </ul>
+      </div>
+
+      <div class="skill-category fade-in delay-2">
+        <div class="skill-icon"><i class="fas fa-cogs"></i></div>
+        <h3 class="skill-title">Automation</h3>
+        <ul class="skill-list">
+          <li>n8n</li>
+          <li>Make (Integromat)</li>
+          <li>Flowise</li>
+          <li>Zapier</li>
+        </ul>
+      </div>
+
+      <div class="skill-category fade-in delay-3">
+        <div class="skill-icon"><i class="fas fa-code"></i></div>
+        <h3 class="skill-title">Développement</h3>
+        <ul class="skill-list">
+          <li>Java/Spring Boot</li>
+          <li>Angular</li>
+          <li>Python/Django</li>
+          <li>Next.js</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+ <!-- Soft Skills Section -->
+<section class="section">
+  <h2>Soft Skills en Action</h2>
+  <div class="skills-container">
+    
+    <!-- Ligne 1 -->
+    <div class="skill-category fade-in">
+      <div class="skill-icon"><i class="fas fa-search"></i></div>
+      <h3 class="skill-title">Curiosité</h3>
+      <p>Veille continue, tests d’outils, exploration de solutions growth (scraping, IA, etc.) sur Parazar & Engage Paris.</p>
+    </div>
+
+    <div class="skill-category fade-in delay-1">
+      <div class="skill-icon"><i class="fas fa-check-circle"></i></div>
+      <h3 class="skill-title">Rigueur</h3>
+      <p>Conception structurée de projets (SquidResearch, Origin). Gestion des flux, sécurité, documentation claire.</p>
+    </div>
+
+    <!-- Ligne 2 -->
+    <div class="skill-category fade-in delay-2">
+      <div class="skill-icon"><i class="fas fa-user-astronaut"></i></div>
+      <h3 class="skill-title">Autonomie</h3>
+      <p>Capacité à développer des solutions complètes seul (dev, automation, intégration) avec livrables solides.</p>
+    </div>
+
+    <div class="skill-category fade-in delay-3">
+      <div class="skill-icon"><i class="fas fa-sync-alt"></i></div>
+      <h3 class="skill-title">Adaptabilité</h3>
+      <p>Polyvalence entre frameworks (Spring, Django, Next.js), outils growth et design, selon le projet ou l’équipe.</p>
+    </div>
+
+    <!-- Ligne 3 -->
+    <div class="skill-category fade-in delay-4">
+      <div class="skill-icon"><i class="fas fa-pencil-ruler"></i></div>
+      <h3 class="skill-title">Communication visuelle</h3>
+      <p>Création d’interfaces et supports clairs (site El Farniente, fiches Origin, branding d’équipes projets).</p>
+    </div>
+
+    <div class="skill-category fade-in delay-5">
+      <div class="skill-icon"><i class="fas fa-chart-pie"></i></div>
+      <h3 class="skill-title">Sens de l’analyse</h3>
+      <p>Dashboards Looker Studio, analyse comportementale, stratégie de ciblage ROIste sur Avtis & Parazar.</p>
+    </div>
+
+  </div>
+</section>
+
+
+
+  <!-- Contact Section -->
+  <section class="section">
+    <div class="contact-section" id="contact">
+      <h2>Travaillons Ensemble</h2>
+      <p style="text-align: center; font-size: 1.2rem; opacity: 0.8; max-width: 600px; margin: 0 auto;">
+        Prêt à booster votre croissance avec des stratégies data-driven et une approche technique solide ?
+      </p>
+      
+      <div class="contact-info">
+        <div class="contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>lucas.tymen@gmail.com</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-phone"></i>
+          <span>06 62 09 82 57</span>
+        </div>
+        <div class="contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Maisons-Alfort (94)</span>
+        </div>
+      </div>
+
+      <div class="social-links">
+        <a href="https://linkedin.com/in/lucas-tymen-310255123" class="social-link" target="_blank">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <a href="https://github.com/LucasTymen" class="social-link" target="_blank">
+          <i class="fab fa-github"></i>
+        </a>
+        <a href="https://lucastymengraphxland.org" class="social-link" target="_blank">
+          <i class="fas fa-globe"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Smooth reveal animation on scroll
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, observerOptions);
+
+    // Observe all fade-in elements
+    document.addEventListener('DOMContentLoaded', function() {
+      const fadeElements = document.querySelectorAll('.fade-in');
+      fadeElements.forEach(el => observer.observe(el));
+    });
+
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
